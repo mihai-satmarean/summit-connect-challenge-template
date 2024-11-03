@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: configure-ds-project-first-run
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"  
+  labels:
+    backstage.io/kubernetes-id: {{ .Values.app.name }}
+    tekton.dev/pipeline: configure-ds-project
+    type: pipeline
+spec:
+  workspaces:
+    - name: notebook
+      persistentVolumeClaim:
+        claimName: {{ .Values.app.name }}
+  params:
+    - name: source-repo
+      value: {{ .Values.git.repo }}
+  pipelineRef:
+    name: configure-ds-project
+  taskRunTemplate:
+    podTemplate:
+      securityContext:
+        nodeSelector:
+          kubernetes.io/hostname: ip-10-0-208-74.us-east-2.compute.internal
+  serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s

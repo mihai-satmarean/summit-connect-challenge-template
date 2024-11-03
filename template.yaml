@@ -1,0 +1,90 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: summit-connect-challenge-template
+  title: Summit Connect Challenge
+  description: Deploy an example application via self-service over Developer Hub
+  tags:
+    - summit-connect
+    - challenge
+    - flutter
+spec:
+  owner: kounex
+  type: service
+
+  parameters: 
+    - title: Provide information for GitLab
+      required:
+        - gitlabGroup
+      properties:
+        gitlabGroup:
+          title: GitLab Group
+          type: string
+          description: Your GitLab group
+          default: development
+          enum:
+            - development
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this service is for
+          default: Create and deploy the summit-connect-challenge app with ArgoCD over Developer Hub
+    - title: Provide information about the new service
+      required:
+        - clusterId
+        - namespace
+      properties:
+        clusterId:
+          title: Cluster Id
+          type: string
+          description: Id of the cluster (check your URL starting at *.apps.*)
+          default: apps.cluster-85lcd.85lcd.sandbox1597.opentlc.com
+        namespace: 
+          title: Namespace
+          type: string
+          description: In which namespace should the application be deployed?
+
+  steps:
+    - id: templateGitOps
+      name: Generating the deployment resources and artifacts
+      action: fetch:template
+      input:
+        url: ./manifests
+        copyWithoutTemplating: []
+        values:
+          componentId: summit-connect-challenge
+          description: ${{parameters.description}}
+          sourceRepository: https://gitlab-gitlab${{parameters.clusterId}}/${{parameters.gitlabGroup}}/${{parameters.namespace}}-summit-connect-challenge.git
+          defaultBranch: main
+          cluster: ${{parameters.clusterId}}
+          namespace: ${{parameters.namespace}}
+        targetPath: ./tenant-gitops
+
+    - id: publishGitOps
+      name: Publishing to Deployment Resource Repository
+      action: publish:gitlab
+      input:
+        allowedHosts:
+          - gitlab.com
+        repoUrl: gitlab-gitlab${{parameters.clusterId}}?owner=${{parameters.gitlabGroup}}&repo=${{parameters.namespace}}-summit-connect-challenge
+        title: GitOps resources for ${{parameters.namespace}}-summit-connect-challenge
+        description: GitOps resources for ${{parameters.namespace}}-summit-connect-challenge
+        sourcePath: ./tenant-gitops
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+
+    - id: createArgoResources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{parameters.namespace}}-summit-connect-challenge-bootstrap
+        argoInstance: main
+        namespace: janus-argocd 
+        repoUrl: https://gitlab-gitlab${{parameters.clusterId}}/${{parameters.gitlabGroup}}/${{parameters.namespace}}-summit-connect-challenge.git
+        path: 'argocd/'
+
+  output:
+    links:
+      - title: Your ArgoCD Resources
+        url: ${{steps.publishGitOps.output.remoteUrl}}

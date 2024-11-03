@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    app: {{ .Values.app.name }}
+    app.kubernetes.io/part-of: {{ .Values.app.name }}
+data:
+  config: |-
+    ENV={{ .Values.app.env }}
