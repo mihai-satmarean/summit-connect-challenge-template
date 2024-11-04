@@ -58,6 +58,7 @@ spec:
           defaultBranch: main
           cluster: ${{parameters.clusterId}}
           namespace: ${{parameters.namespace}}
+          user: ${{user.entity.metadata.name}}
         targetPath: ./tenant-gitops
 
     - id: publishGitOps

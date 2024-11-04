@@ -25,4 +25,4 @@ metadata:
 spec:
   type: service
   lifecycle: development
-  owner: ${{values.owner | dump}}
+  owner: ${{values.user}}
