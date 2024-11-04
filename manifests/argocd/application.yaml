@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${{values.componentId}}
+  name: ${{values.namespace}}-${{values.componentId}}
   namespace: janus-argocd
 spec:
   project: default
@@ -22,7 +22,7 @@ spec:
           name: ${{values.componentId}}
           namespace: ${{values.namespace}}
           cluster: ${{values.cluster}}
-          
+
   syncPolicy:
     automated: 
       prune: false
