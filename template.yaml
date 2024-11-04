@@ -42,12 +42,7 @@ spec:
         namespace: 
           title: Namespace
           type: string
-          description: In which namespace should the application be deployed?
-          enum:
-            - ${{ user.entity.metadata.name }}
-        env:
-          title: env
-          type: string
+          description: In which namespace the application should be deployed
 
   steps:
     - id: templateGitOps
