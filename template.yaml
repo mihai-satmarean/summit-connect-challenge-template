@@ -92,7 +92,6 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{steps.publishGitOps.output.repoContentsUrl}}
-        catalogInfoPath: ./catalog-info.yaml
 
   output:
     links:
