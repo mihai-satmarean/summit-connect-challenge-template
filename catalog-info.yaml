@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.namespace}}-${{values.componentId}}
+  title: Summit Connect Challenge
+  description: Deploy an example application via self-service over Developer Hub
+  annotations:
+    argocd/app-name: ${{values.namespace}}-${{values.componentId}}-bootstrap
+    backstage.io/kubernetes-id: ${{values.componentId}}
+    backstage.io/kubernetes-namespace: ${{values.namespace}}
+  tags:
+    - summit-connect
+    - challenge
+    - flutter
+  links:
+    - url: https://console-openshift-console.${{values.clusterId}}
+      title: OpenShift Console
+      icon: web
+    - url: https://argocd-server-janus-argocd.${{values.clusterId}}
+      title: ArgoCD
+      icon: web
+    - url: https://gitlab-gitlab.${{values.clusterId}}/${{values.gitlabGroup}}/${{values.namespace}}-summit-connect-challenge
+      title: GitLab Repository
+      icon: web
+spec:
+  type: service
+  lifecycle: development
+  owner: ${{values.owner | dump}}

@@ -83,8 +83,16 @@ spec:
         namespace: janus-argocd 
         repoUrl: https://gitlab-gitlab.${{parameters.clusterId}}/${{parameters.gitlabGroup}}/${{parameters.namespace}}-summit-connect-challenge.git
         path: 'argocd/'
+    
+    - id: registerComponent
+      name: Registering the GitOps Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{steps.publishGitOps.output.repoContentsUrl}}
+        catalogInfoPath: ./catalog-info.yaml
 
   output:
     links:
-      - title: Your ArgoCD Resources
-        url: ${{steps.publishGitOps.output.remoteUrl}}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: ${{steps.registerComponent.output.entityRef}}
