@@ -43,6 +43,8 @@ spec:
           title: Namespace
           type: string
           description: In which namespace should the application be deployed?
+          enum:
+            - ${{ user.entity.metadata.name }}
         env:
           title: env
 
