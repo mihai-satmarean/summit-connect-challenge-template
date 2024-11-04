@@ -59,6 +59,8 @@ spec:
           cluster: ${{parameters.clusterId}}
           namespace: ${{parameters.namespace}}
           user: ${{user.entity.metadata.name}}
+          clusterId: {{parameters.clusterId}}
+          gitlabGroup: ${{parameters.gitlabGroup}}
         targetPath: ./tenant-gitops
 
     - id: publishGitOps
