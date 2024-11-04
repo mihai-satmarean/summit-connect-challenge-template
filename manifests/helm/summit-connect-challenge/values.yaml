@@ -1,5 +1,4 @@
 app:
   name: ${{values.componentId}}
   namespace: ${{values.namespace}}
-  cluster: ${{values.cluster}}
   env: ${{values.env}}

@@ -56,10 +56,9 @@ spec:
           description: ${{parameters.description}}
           sourceRepository: https://gitlab-gitlab.${{parameters.clusterId}}/${{parameters.gitlabGroup}}/${{parameters.namespace}}-summit-connect-challenge.git
           defaultBranch: main
-          cluster: ${{parameters.clusterId}}
+          clusterId: ${{parameters.clusterId}}
           namespace: ${{parameters.namespace}}
           user: ${{user.entity.metadata.name}}
-          clusterId: {{parameters.clusterId}}
           gitlabGroup: ${{parameters.gitlabGroup}}
         targetPath: ./tenant-gitops
 
