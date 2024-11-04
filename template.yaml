@@ -47,6 +47,7 @@ spec:
             - ${{ user.entity.metadata.name }}
         env:
           title: env
+          type: string
 
   steps:
     - id: templateGitOps
