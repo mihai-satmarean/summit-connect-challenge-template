@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: userxy-summit-connect-challenge-template
-  title: Summit Connect Challenge
+  title: USERXY Summit Connect Challenge
   description: Deploy an example application via self-service over Developer Hub
   tags:
     - summit-connect
